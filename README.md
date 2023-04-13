@@ -1,6 +1,6 @@
-# Todo List 
+# Todo List
 
-This code is written in Vue.js and represents a simple task management application. It has a list of todo lists, each of which can have many tasks. The user can add new todo lists or tasks to existing todo lists, and they can delete either.
+This code is written in Vue.js and represents a simple task management application. It has a list of todo lists, each of which can have many tasks. The user can add new todo lists or tasks to existing todo lists, and they can delete either. Additionally, this application also supports drag and drop of tasks to allow for more convenient organization.
 
 ## Table of contents
 
@@ -23,6 +23,7 @@ This code is written in Vue.js and represents a simple task management applicati
 - Vuejs3
 - Typescript
 - Vuetify3
+- [Vue Draggable](https://github.com/SortableJS/vue.draggable.next)
 
 ## Project setup
 

@@ -1,4 +1,8 @@
 <template>
+  <p :class="`${theme ? 'textInfoLight' : 'textInfoDark'}`">
+    Les tâches peuvent être déplacées d'une liste à l'autre en utilisant la
+    fonctionnalité de glisser-déposer.
+  </p>
   <div class="toggleTheme">
     <v-btn icon @click="props.toggleTheme" :theme="props.themeMode">
       <v-icon :color="iconColor">{{ icon }}</v-icon>
@@ -38,5 +42,21 @@ export default {
   position: fixed;
   bottom: 20px;
   right: 20px;
+}
+p {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  font-size: 14px;
+  padding: 5px;
+  border-radius: 3px;
+}
+.textInfoLight {
+  background-color: #eeeeee;
+  color: black;
+}
+.textInfoDark {
+  background-color: #202225;
+  color: white;
 }
 </style>

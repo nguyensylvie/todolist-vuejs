@@ -1,7 +1,8 @@
 <template>
   <div
-    class="d-flex scrollable overflow-x-auto fill-height pb-16"
-    :style="bgStyle"
+    :class="`d-flex scrollable overflow-x-auto fill-height pb-16 ${
+      theme ? 'bgLight' : 'bgDark'
+    }`"
   >
     <div v-for="(todoList, todoListIndex) in todoLists" :key="todoListIndex">
       <v-card
@@ -25,34 +26,36 @@
           </div>
         </template>
 
-        <v-card
-          class="ma-4"
-          color="bgTask"
-          rounded="lg"
-          variant="flat"
-          v-for="(task, taskIndex) in todoList.tasks"
-          :key="taskIndex"
-        >
-          <v-card-item>
-            <v-card-title class="text-body-2 d-flex">
-              <div class="text-h6 pre-line">
-                {{ task.title }}
-              </div>
-              <v-spacer></v-spacer>
-              <v-btn
-                icon="$close"
-                size="small"
-                variant="text"
-                @click="deleteTask(taskIndex, todoListIndex)"
-              ></v-btn>
-            </v-card-title>
-            <div class="py-2" v-show="task.description">
-              <div class="font-weight-light text-medium-emphasis pre-line">
-                {{ task.description }}
-              </div>
-            </div>
-          </v-card-item>
-        </v-card>
+        <draggable :list="todoList.tasks" group="taks" itemKey="title">
+          <template #item="{ element, taskIndex }">
+            <v-card
+              class="ma-4 draggable"
+              color="bgTask"
+              rounded="lg"
+              variant="flat"
+            >
+              <v-card-item>
+                <v-card-title class="text-body-2 d-flex">
+                  <div class="text-h6 pre-line">
+                    {{ element.title }}
+                  </div>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    icon="$close"
+                    size="small"
+                    variant="text"
+                    @click="deleteTask(taskIndex, todoListIndex)"
+                  ></v-btn>
+                </v-card-title>
+                <div class="py-2" v-show="element.description">
+                  <div class="font-weight-light text-medium-emphasis pre-line">
+                    {{ element.description }}
+                  </div>
+                </div>
+              </v-card-item>
+            </v-card>
+          </template>
+        </draggable>
 
         <v-card-actions v-if="!todoList.showForm">
           <v-btn prepend-icon="mdi-plus" @click="toggleTaskForm(todoListIndex)">
@@ -123,9 +126,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, watch } from "vue";
 import ToggleThemeBtn from "./ToggleThemeBtn.vue";
 import { TodoList } from "../types";
+import draggable from "vuedraggable";
 
 let todoLists = reactive<TodoList[]>([
   {
@@ -163,20 +167,16 @@ let todoLists = reactive<TodoList[]>([
   },
 ]);
 
+watch(todoLists, (newVal) => {
+  console.log("my todolist has been modified: ", newVal);
+});
+
 const theme = ref<boolean>(true);
 const showFormTodoList = ref<boolean>(false);
 const newTodoListTitle = ref<string>("");
 const newTaskTitle = ref<string>("");
 const newTaskDescription = ref<string>("");
 const isDialogVisible = ref<boolean>(false);
-
-const bgStyle = computed(() => ({
-  backgroundImage: `url(${
-    theme.value ? "../assets/bgLight.png" : "../assets/bgDark.png"
-  })`,
-  backgroundRepeat: "repeat",
-  backgroundColor: `${theme.value ? "#EEEEEE" : "#202225"}`,
-}));
 
 const themeMode = computed(() => (theme.value ? "light" : "dark"));
 
@@ -263,10 +263,25 @@ const toggleTaskForm = (listIndex: number) => {
 <script lang="ts">
 export default {
   name: "TodoList",
+  components: {
+    draggable,
+  },
 };
 </script>
 
 <style>
+.bgLight {
+  background-image: url("../assets/bgLight.png");
+  background-repeat: repeat;
+  background-color: #eeeeee;
+}
+
+.bgDark {
+  background-image: url("../assets/bgDark.png");
+  background-repeat: repeat;
+  background-color: #202225;
+}
+
 .pre-line {
   white-space: pre-line;
 }
@@ -277,5 +292,9 @@ input:focus {
 
 .v-btn {
   text-transform: none;
+}
+
+.draggable {
+  cursor: pointer;
 }
 </style>
