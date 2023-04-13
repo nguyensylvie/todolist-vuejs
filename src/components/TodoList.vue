@@ -172,11 +172,10 @@ const isDialogVisible = ref<boolean>(false);
 
 const bgStyle = computed(() => ({
   backgroundImage: `url(${
-    theme.value
-      ? import.meta.env.BASE_URL + "src/assets/bgLight.png"
-      : import.meta.env.BASE_URL + "src/assets/bgDark.png"
+    theme.value ? "../assets/bgLight.png" : "../assets/bgDark.png"
   })`,
   backgroundRepeat: "repeat",
+  backgroundColor: `${theme.value ? "#EEEEEE" : "#202225"}`,
 }));
 
 const themeMode = computed(() => (theme.value ? "light" : "dark"));
