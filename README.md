@@ -12,8 +12,6 @@ This code is written in Vue.js and represents a simple task management applicati
 
 ## Overview
 
-### Screenshot
-
 ### Link
 
 - Live Site URL: [live site](https://todolist-vuejs-typescript.netlify.app/)
